@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from django.shortcuts import render
 
 monthly_challenges = {
     "january": "Eat no meat for the entire month!",
@@ -48,5 +49,7 @@ def monthly_challenge(request, month):
         challenge_text = monthly_challenges[month]
     else:
         return HttpResponseNotFound("<span style='color: red;'>This month is not supported!</span>")
-    response_data = f"<h1>{challenge_text}</h1>"
-    return HttpResponse(response_data)
+    return render(request, "challenges/challenge.html", {
+        "month_name": month.capitalize(),
+        "text": challenge_text
+    })
